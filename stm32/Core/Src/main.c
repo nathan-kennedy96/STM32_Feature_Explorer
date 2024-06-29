@@ -31,7 +31,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define RX_BUFFER_SIZE 4
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -43,7 +43,8 @@
 UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
-
+const Message hello_message = { HELLO, 1234 };
+uint8_t rx_buffer[RX_BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -51,12 +52,12 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_UART4_Init(void);
 /* USER CODE BEGIN PFP */
-
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-const Message hello_message = { HELLO, 1234 };
+
 /* USER CODE END 0 */
 
 /**
@@ -90,15 +91,17 @@ int main(void)
   MX_UART4_Init();
   /* USER CODE BEGIN 2 */
 
+  HAL_UART_Receive_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_UART_Transmit(&huart4, (uint8_t*)&hello_message, sizeof(Message), HAL_MAX_DELAY);
-	  HAL_Delay(1000);
-    /* USER CODE END WHILE */
+	// Main loop does nothing, just waits for interrupts
+    __NOP();
+	/* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
@@ -174,7 +177,9 @@ static void MX_UART4_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN UART4_Init 2 */
-
+  // Enable the UART interrupt in NVIC
+  HAL_NVIC_SetPriority(UART4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(UART4_IRQn);
   /* USER CODE END UART4_Init 2 */
 
 }
@@ -197,7 +202,17 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == UART4)
+  {
+	  // Transmit the received data back
+	  HAL_UART_Transmit_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
 
+	  // Restart UART reception
+	  HAL_UART_Receive_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
+  }
+}
 /* USER CODE END 4 */
 
 /**
