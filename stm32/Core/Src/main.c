@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "message.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,7 +56,7 @@ static void MX_UART4_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-const uint8_t helloWorld[] = "Hello World\n";
+const Message hello_message = { HELLO, 1234 };
 /* USER CODE END 0 */
 
 /**
@@ -96,7 +96,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  HAL_UART_Transmit(&huart4, helloWorld, sizeof(helloWorld) -1, HAL_MAX_DELAY);
+	  HAL_UART_Transmit(&huart4, (uint8_t*)&hello_message, sizeof(Message), HAL_MAX_DELAY);
 	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
