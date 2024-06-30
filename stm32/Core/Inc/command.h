@@ -9,8 +9,8 @@
 #define INC_COMMAND_H_
 
 typedef enum {
-    NOK = -1,
-    HELLO = 1
+    NOK = 0,
+    HELLO = 1,
 } Command;
 
 #endif /* INC_COMMAND_H_ */

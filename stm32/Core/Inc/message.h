@@ -9,10 +9,14 @@
 #define INC_MESSAGE_H_
 
 #include "command.h"
+#include <stdint.h>   // Include standard integer types
 
 typedef struct {
     Command cmd;
     uint16_t data;
 } Message;
+
+void deserialize_message(const uint8_t* buffer, Message* msg);
+void serialize_message(const Message* msg, uint8_t* buffer);
 
 #endif /* INC_MESSAGE_H_ */
