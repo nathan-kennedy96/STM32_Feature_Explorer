@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "message.h"
+#include "command_manager.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,7 +32,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define RX_BUFFER_SIZE 4
+#define COMM_BUFFER_SIZE 4
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -44,7 +45,9 @@ UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
 const Message hello_message = { HELLO, 1234 };
-uint8_t rx_buffer[RX_BUFFER_SIZE];
+uint8_t rx_buffer[COMM_BUFFER_SIZE];
+Message rx_message;
+uint8_t tx_buffer[COMM_BUFFER_SIZE];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -67,7 +70,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+  initialize_function_map();
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -91,7 +94,7 @@ int main(void)
   MX_UART4_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_UART_Receive_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
+  HAL_UART_Receive_IT(&huart4, rx_buffer, COMM_BUFFER_SIZE);
 
   /* USER CODE END 2 */
 
@@ -206,11 +209,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart->Instance == UART4)
   {
+      //Deserialize the message
+	  deserialize_message(rx_buffer, &rx_message);
+	  function_map[rx_message.cmd](&rx_message, tx_buffer);
 	  // Transmit the received data back
-	  HAL_UART_Transmit_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
+	  HAL_UART_Transmit_IT(&huart4, tx_buffer, COMM_BUFFER_SIZE);
 
 	  // Restart UART reception
-	  HAL_UART_Receive_IT(&huart4, rx_buffer, RX_BUFFER_SIZE);
+	  HAL_UART_Receive_IT(&huart4, rx_buffer, COMM_BUFFER_SIZE);
   }
 }
 /* USER CODE END 4 */

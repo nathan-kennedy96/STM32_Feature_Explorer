@@ -90,6 +90,7 @@ class STM32_UART:
         self.logger.debug(f"Received Response {ret}")
         ret_msg: Message = Message.load(ret)
         self.logger.info(f"Received Response: {ret_msg}")
+        return ret_msg
         
 
 
@@ -97,6 +98,8 @@ class STM32_UART:
 if __name__ == "__main__":
     stm32 = STM32_UART()
     our_msg = Message(Command.HELLO, 1235)
+    nok_msg = Message(Command.NOK, 1234)
     while True:
-        stm32._exchange(our_msg)
+        our_msg = stm32._exchange(our_msg)
+        stm32._exchange(nok_msg)
         sleep(1)

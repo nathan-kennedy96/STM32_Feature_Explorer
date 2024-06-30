@@ -1,0 +1,3 @@
+../Core/Src/command_manager.c:12:6:nok	1
+../Core/Src/command_manager.c:21:6:hello	1
+../Core/Src/command_manager.c:31:6:initialize_function_map	1

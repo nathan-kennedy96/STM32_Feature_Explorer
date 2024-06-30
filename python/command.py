@@ -2,7 +2,7 @@ from enum import Enum
 
 class Command(Enum):
     
-    NOK = -1
+    NOK = 0
     HELLO = 1
 
     

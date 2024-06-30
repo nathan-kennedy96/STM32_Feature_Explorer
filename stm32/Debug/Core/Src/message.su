@@ -1,0 +1,2 @@
+../Core/Src/message.c:11:6:deserialize_message	16	static
+../Core/Src/message.c:14:6:serialize_message	16	static
