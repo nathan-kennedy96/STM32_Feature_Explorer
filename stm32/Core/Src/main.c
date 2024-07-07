@@ -63,12 +63,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-
-
-
-
-
-
 /* USER CODE END 0 */
 
 /**
@@ -112,8 +106,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	// Main loop does nothing, just waits for interrupts
     MX_LWIP_Process();
+    HAL_Delay(1); // Add a small delay to allow other interrupts to be serviced
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
