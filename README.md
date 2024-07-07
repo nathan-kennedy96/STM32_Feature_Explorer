@@ -14,4 +14,6 @@ This project is designed to be a complete exploration of the STM32 microcontroll
 The project also includes a PC-side interface to interact with the STM32, demonstrating how to build robust communication channels between the microcontroller and a computer application.
 
 ## Features
- - None Yet!
+ - UART Communication
+   - Send commands from PC to STM32 and receive response
+   - Command map to stm32 functions
