@@ -27,4 +27,6 @@ void hello(Message* rx_msg, uint8_t* tx_buffer);
 // Initialization function for the command map
 void initialize_function_map(void);
 
+void handle_request(const uint8_t* rx_buffer, uint8_t* tx_buffer);
+
 #endif /* INC_COMMAND_MANAGER_H_ */

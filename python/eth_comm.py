@@ -1,14 +1,50 @@
 import socket
+import logging
+from time import sleep
+from command import Command
+from message import Message
 
-def tcp_client():
-    host = '192.168.0.10'  # STM32 IP address
-    port = 12345
+DEFAULT_HOST = '192.168.0.10'
+DEFAULT_PORT = 12345
+INTERFACE_NAME = "STM32_TCP"
 
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((host, port))
-        s.sendall(b'Hello from PC')
-        data = s.recv(1024)
-        print('Received', repr(data))
+class STM32_TCP:
 
+    def __init__(self, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT, name: str = INTERFACE_NAME ):
+        logging.basicConfig(level=logging.DEBUG)
+        self.logger = logging.getLogger(name)
+        self.host = host
+        self.port = port
+        self.sock = None
+        self.timeout = 1
+        self.connect()
+        
+
+    def connect(self):
+        self.logger.info(f"Connecting to STM32 via TCP/IP at {self.host}:{self.port}")
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.settimeout(self.timeout)
+        self.sock.connect((self.host,self.port))
+
+    def teardown(self):
+        if self.sock is not None:
+            self.sock.close()
+            self.sock = None
+
+    def _exchange(self, msg: Message) -> Message:
+        self.logger.info(f"Sending {msg}")
+        self.sock.sendall(bytes(msg))
+        ret = self.sock.recv(Message.dtype.itemsize)
+        self.logger.debug(f"Received Response {ret}")
+        ret_msg: Message = Message.load(ret)
+        self.logger.info(f"Received Response: {ret_msg}")
+        return ret_msg
+        
 if __name__ == "__main__":
-    tcp_client()
+    stm32_tcp = STM32_TCP()
+    our_msg = Message(Command.HELLO, 1235)
+    nok_msg = Message(Command.NOK, 1234)
+    while True:
+        our_msg = stm32_tcp._exchange(our_msg)
+        stm32_tcp._exchange(nok_msg)
+        sleep(1)
