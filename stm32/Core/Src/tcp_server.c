@@ -11,6 +11,9 @@
 #include "lwip/sys.h"
 #include "lwip/tcp.h"
 #include "string.h"
+#include "message.h"
+#include "command_manager.h"
+#include "common.h"
 
 #define SERVER_PORT 12345
 
@@ -49,9 +52,25 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, er
         tcp_recv(tpcb, NULL);
         return ERR_OK;
     } else {
-        // Handle received data
-        char response[] = "hello";
-        tcp_write(tpcb, response, strlen(response), TCP_WRITE_FLAG_COPY);
+
+
+        // Ensure the received data fits in the buffer
+        if (p->tot_len <= COMM_BUFFER_SIZE) {
+            handle_request((uint8_t *)p->payload, tx_buffer);
+
+            // Send the response back to the client
+            if (tcp_write(tpcb, tx_buffer, 4, TCP_WRITE_FLAG_COPY) != ERR_OK) {
+                // Handle tcp_write error
+            	char response[] = "TCP WRITE ERROR!";
+            	tcp_write(tpcb, response, strlen(response), TCP_WRITE_FLAG_COPY);
+            }
+        } else {
+            // Handle buffer overflow error
+        	 const char *overflow_msg = "Buffer overflow error\n";
+        	 tcp_write(tpcb, overflow_msg, strlen(overflow_msg), TCP_WRITE_FLAG_COPY);
+        }
+
+        // Free the pbuf after processing
         pbuf_free(p);
         return ERR_OK;
     }

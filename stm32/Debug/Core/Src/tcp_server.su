@@ -1,4 +1,0 @@
-../Core/Src/tcp_server.c:23:6:tcp_server_init	16	static
-../Core/Src/tcp_server.c:39:14:tcp_server_accept	24	static
-../Core/Src/tcp_server.c:46:14:tcp_server_recv	32	static
-../Core/Src/tcp_server.c:60:13:tcp_server_error	16	static

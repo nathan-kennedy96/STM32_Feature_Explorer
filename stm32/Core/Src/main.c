@@ -21,10 +21,12 @@
 #include "lwip.h"
 #include "tcp_server.h"
 
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "message.h"
 #include "command_manager.h"
+#include "common.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,7 +36,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define COMM_BUFFER_SIZE 4
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -46,10 +48,7 @@
 UART_HandleTypeDef huart4;
 
 /* USER CODE BEGIN PV */
-const Message hello_message = { HELLO, 1234 };
-uint8_t rx_buffer[COMM_BUFFER_SIZE];
-//Message rx_message;
-uint8_t tx_buffer[COMM_BUFFER_SIZE];
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,12 +61,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-
-
-
-
-
+//allocate the rx tx buffers used throughout
+uint8_t rx_buffer[COMM_BUFFER_SIZE]; // Define the buffers
+uint8_t tx_buffer[COMM_BUFFER_SIZE]; // Define the buffers
 
 /* USER CODE END 0 */
 
@@ -227,10 +223,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   if (huart->Instance == UART4)
   {
 	  handle_request(rx_buffer, tx_buffer);
-      //Deserialize the message
-//	  deserialize_message(rx_buffer, &rx_message); //TODO: handle deserialization failures and unknown msgs!
-//	  // We should use the NOK return for those!
-//	  function_map[rx_message.cmd](&rx_message, tx_buffer);
+
 	  // Transmit the received data back
 	  HAL_UART_Transmit_IT(&huart4, tx_buffer, COMM_BUFFER_SIZE);
 
