@@ -17,3 +17,7 @@ The project also includes a PC-side interface to interact with the STM32, demons
  - UART Communication
    - Send commands from PC to STM32 and receive response
    - Command map to stm32 functions
+ - TCP IP Communication
+   - Use LAN8720 Module
+   - Enable ping stm32
+   - enable tcp ip data send receive from PC
