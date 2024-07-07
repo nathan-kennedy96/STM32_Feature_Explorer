@@ -48,7 +48,7 @@ UART_HandleTypeDef huart4;
 /* USER CODE BEGIN PV */
 const Message hello_message = { HELLO, 1234 };
 uint8_t rx_buffer[COMM_BUFFER_SIZE];
-Message rx_message;
+//Message rx_message;
 uint8_t tx_buffer[COMM_BUFFER_SIZE];
 /* USER CODE END PV */
 
@@ -226,10 +226,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
   if (huart->Instance == UART4)
   {
+	  handle_request(rx_buffer, tx_buffer);
       //Deserialize the message
-	  deserialize_message(rx_buffer, &rx_message); //TODO: handle deserialization failures and unknown msgs!
-	  // We should use the NOK return for those!
-	  function_map[rx_message.cmd](&rx_message, tx_buffer);
+//	  deserialize_message(rx_buffer, &rx_message); //TODO: handle deserialization failures and unknown msgs!
+//	  // We should use the NOK return for those!
+//	  function_map[rx_message.cmd](&rx_message, tx_buffer);
 	  // Transmit the received data back
 	  HAL_UART_Transmit_IT(&huart4, tx_buffer, COMM_BUFFER_SIZE);
 

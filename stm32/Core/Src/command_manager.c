@@ -8,6 +8,7 @@
 #include "command_manager.h"
 
 FunctionPointer function_map[NUM_FUNCTIONS];
+Message rx_message;
 
 void nok(Message* rx_msg, uint8_t* tx_buffer){
 	// Respond with all zeros
@@ -31,4 +32,10 @@ void hello(Message* rx_msg, uint8_t* tx_buffer){
 void initialize_function_map(void) {
     function_map[NOK] = nok;
     function_map[HELLO] = hello;
+}
+
+void handle_request(const uint8_t* rx_buffer, uint8_t* tx_buffer){
+	deserialize_message(rx_buffer, &rx_message); //TODO: handle deserialization failures and unknown msgs!
+	// We should use the NOK return for those!
+	function_map[rx_message.cmd](&rx_message, tx_buffer);
 }
