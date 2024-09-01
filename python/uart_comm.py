@@ -4,8 +4,8 @@ from serial import serial_for_url
 from serial.serialutil import SerialException
 from serial.tools.list_ports import comports
 
-from command import Command
-from message import Message
+from python.command import Command
+from python.message import Message
 
 
 
