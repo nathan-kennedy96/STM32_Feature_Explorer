@@ -1,5 +1,5 @@
 import numpy as np
-from command import Command
+from python.command import Command
 
 class Message: 
     #TODO: can this dtype be inferred from the struct/c code?
@@ -21,9 +21,10 @@ class Message:
         msg = cls(None, None)
         msg._ar = np.frombuffer(data, dtype=Message.dtype)
         return msg 
+    
     @property
     def command(self):
-        return self._ar["command"]
+        return Command(self._ar["command"][0])
 
     @property
     def data(self):
@@ -34,3 +35,10 @@ class Message:
 
     def __bytes__(self):
         return bytes(self._ar)
+    
+    def __eq__(self, other):
+        if not isinstance(other, Message):
+            return False
+
+        # Check if the command and data fields are equal
+        return np.array_equal(self._ar, other._ar)

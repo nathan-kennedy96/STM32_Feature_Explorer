@@ -1,8 +1,8 @@
 import socket
 import logging
 from time import sleep
-from command import Command
-from message import Message
+from python.command import Command
+from python.message import Message
 
 DEFAULT_HOST = '192.168.0.10'
 DEFAULT_PORT = 12345
@@ -31,7 +31,7 @@ class STM32_TCP:
             self.sock.close()
             self.sock = None
 
-    def _exchange(self, msg: Message) -> Message:
+    def exchange(self, msg: Message) -> Message:
         self.logger.info(f"Sending {msg}")
         self.sock.sendall(bytes(msg))
         ret = self.sock.recv(Message.dtype.itemsize)
@@ -45,6 +45,6 @@ if __name__ == "__main__":
     our_msg = Message(Command.HELLO, 1235)
     nok_msg = Message(Command.NOK, 1234)
     while True:
-        our_msg = stm32_tcp._exchange(our_msg)
-        stm32_tcp._exchange(nok_msg)
+        our_msg = stm32_tcp.exchange(our_msg)
+        stm32_tcp.exchange(nok_msg)
         sleep(1)
