@@ -45,18 +45,18 @@ The project also includes a PC-side interface to interact with the STM32, demons
 
 1. From Top Directory:
    1. Add the pip requirements
-      1. ```pip install -r python/requirements.txt```
+      1. `pip install -r python/requirements.txt`
    2. Run the tests:
-      1. ```python -m pytest```
+      1. `python -m pytest`
 
 ### Contributing
 
 1. Install the pre-commit hook:
-   1. ```pre-commit install```
+   1. `pre-commit install`
    2. All Commits will need to be black formatted + pass all functional tests
       1. When commit hooks fail:
          1. For Black Lint
-            1. git add --all to stage the updates by black
-            2. git commit to rerun pre-commit hook
+            1. `git add --all` to stage the updates by black
+            2. `git commit` to rerun pre-commit hook
          2. For Functional Tests
             1. The STM32 functional Tests must pass!
