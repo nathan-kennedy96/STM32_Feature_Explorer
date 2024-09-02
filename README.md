@@ -7,11 +7,14 @@ Welcome to the STM32 Feature Explorer project! The aim of this repo is to learn 
   - [Table of Contents](#table-of-contents)
   - [Project Overview](#project-overview)
   - [Features](#features)
+- [Using This Package](#using-this-package)
+    - [Programming the STM32F407VET6](#programming-the-stm32f407vet6)
+    - [Executing the Functional Tests](#executing-the-functional-tests)
 
 ## Project Overview
 This project is designed to be a complete exploration of the STM32 microcontroller's capabilities. It includes a variety of modules and features that interact with the STM32, showcasing everything from basic GPIO control to advanced communication protocols and peripherals.
 
-The project also includes a PC-side interface to interact with the STM32, demonstrating how to build robust communication channels between the microcontroller and a computer application.
+The project also includes a PC-side interface to interact with the STM32, demonstrating how to build robust communication channels between the microcontroller and a computer application. As well as functional tests of the firmware hardware combination.
 
 ## Features
  - UART Communication
@@ -21,3 +24,23 @@ The project also includes a PC-side interface to interact with the STM32, demons
    - Use LAN8720 Module
    - Enable ping stm32
    - enable tcp ip data send receive from PC
+
+# Using This Package
+  
+  ### Programming the STM32F407VET6
+  1. Clone the Repo onto your system
+  2. Open the stm32 folder using STM32CubeIDE
+     1. In STM32CubeIDE:
+        1. File -> "Open Projects From File System..."
+        2. Directory -> choose the stm32 directory of the cloned repo
+        3. Open the Project
+  3. build and Run the Project:
+     1. Project -> Generate Code
+     2. Project -> Build All
+     3. Run (Green play button)
+   
+
+### Executing the Functional Tests
+
+1. From Top Directory:
+   1. python -m pytest
