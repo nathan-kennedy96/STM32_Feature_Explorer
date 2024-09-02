@@ -51,7 +51,7 @@ class STM32_UART:
         msg: Message = Message.load(ret)
         self.logger.info(f"Received message: {msg}")
 
-    def _exchange(self, msg: Message) -> Message:
+    def exchange(self, msg: Message) -> Message:
         self.logger.info(f"Sending {msg}")
         self.ser.write(bytes(msg))
         ret = self.ser.read(Message.dtype.itemsize)
@@ -59,15 +59,16 @@ class STM32_UART:
         ret_msg: Message = Message.load(ret)
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
+    
+    def teardown(self):
+        self.ser.close()
         
-
-
 
 if __name__ == "__main__":
     stm32 = STM32_UART()
     our_msg = Message(Command.HELLO, 1235)
     nok_msg = Message(Command.NOK, 1234)
     while True:
-        our_msg = stm32._exchange(our_msg)
-        stm32._exchange(nok_msg)
+        our_msg = stm32.exchange(our_msg)
+        stm32.exchange(nok_msg)
         sleep(1)
