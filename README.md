@@ -43,4 +43,7 @@ The project also includes a PC-side interface to interact with the STM32, demons
 ### Executing the Functional Tests
 
 1. From Top Directory:
-   1. python -m pytest
+   1. Add the pip requirements
+      1. ```pip install -r python/requirements.txt```
+   2. Run the tests:
+      1. ```python -m pytest```
