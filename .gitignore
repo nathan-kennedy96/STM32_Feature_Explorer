@@ -4,6 +4,7 @@
 /stm32/LWIP/
 /stm32/Middlewares/
 /stm32/Release/
+/stm32/.settings/
 
 # Ignore Python cache files
 __pycache__/
@@ -14,3 +15,6 @@ __pycache__/
 
 # Ignore Linker Scripts
 *.ld
+# Ignore autogenerate project settinggs
+*.cproject
+*.mxproject
