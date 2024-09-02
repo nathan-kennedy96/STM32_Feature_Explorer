@@ -1,0 +1,16 @@
+# Ignore build and library directories
+/stm32/Debug/
+/stm32/Drivers/
+/stm32/LWIP/
+/stm32/Middlewares/
+/stm32/Release/
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore pytest cache
+.pytest_cache/
+
+# Ignore Linker Scripts
+*.ld
