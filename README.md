@@ -10,6 +10,7 @@ Welcome to the STM32 Feature Explorer project! The aim of this repo is to learn 
 - [Using This Package](#using-this-package)
     - [Programming the STM32F407VET6](#programming-the-stm32f407vet6)
     - [Executing the Functional Tests](#executing-the-functional-tests)
+    - [Contributing](#contributing)
 
 ## Project Overview
 This project is designed to be a complete exploration of the STM32 microcontroller's capabilities. It includes a variety of modules and features that interact with the STM32, showcasing everything from basic GPIO control to advanced communication protocols and peripherals.
@@ -47,3 +48,15 @@ The project also includes a PC-side interface to interact with the STM32, demons
       1. ```pip install -r python/requirements.txt```
    2. Run the tests:
       1. ```python -m pytest```
+
+### Contributing
+
+1. Install the pre-commit hook:
+   1. ```pre-commit install```
+   2. All Commits will need to be black formatted + pass all functional tests
+      1. When commit hooks fail:
+         1. For Black Lint
+            1. git add --all to stage the updates by black
+            2. git commit to rerun pre-commit hook
+         2. For Functional Tests
+            1. The STM32 functional Tests must pass!
