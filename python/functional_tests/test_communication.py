@@ -4,6 +4,7 @@ from python.eth_comm import STM32_TCP
 from python.uart_comm import STM32_UART
 import pytest
 
+
 class BaseTestCommFunctionality:
 
     @pytest.fixture(autouse=True)
@@ -12,22 +13,25 @@ class BaseTestCommFunctionality:
         yield
         self.comm.teardown()
 
-    @pytest.mark.parametrize("data_number, expected_response", [
-        # Hello is programmed to respond with data incremented by one
-        (1234, 1235),
-        (0, 1),
-        (999, 1000)
-    ])
+    @pytest.mark.parametrize(
+        "data_number, expected_response",
+        [
+            # Hello is programmed to respond with data incremented by one
+            (1234, 1235),
+            (0, 1),
+            (999, 1000),
+        ],
+    )
     def test_hello_message(self, data_number, expected_response):
         """Test that the hello message returns a response with correct Command and data"""
         hello_msg = Message(Command.HELLO, data_number)
         response_message = self.comm.exchange(hello_msg)
         assert response_message.data == expected_response
 
-    @pytest.mark.parametrize("command, data, expected_command, expected_data", [
-        (Command.NOK, 0, Command.NOK, 0),
-        (Command.NOK, 123, Command.NOK, 0)
-    ])
+    @pytest.mark.parametrize(
+        "command, data, expected_command, expected_data",
+        [(Command.NOK, 0, Command.NOK, 0), (Command.NOK, 123, Command.NOK, 0)],
+    )
     def test_nok_message(self, command, data, expected_command, expected_data):
         """Test that the NOK message or unknown message responds with the expected NOK message."""
         nok_msg = Message(command, data)

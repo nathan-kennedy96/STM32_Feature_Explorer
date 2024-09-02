@@ -4,13 +4,19 @@ from time import sleep
 from python.command import Command
 from python.message import Message
 
-DEFAULT_HOST = '192.168.0.10'
+DEFAULT_HOST = "192.168.0.10"
 DEFAULT_PORT = 12345
 INTERFACE_NAME = "STM32_TCP"
 
+
 class STM32_TCP:
 
-    def __init__(self, host: str = DEFAULT_HOST, port: int = DEFAULT_PORT, name: str = INTERFACE_NAME ):
+    def __init__(
+        self,
+        host: str = DEFAULT_HOST,
+        port: int = DEFAULT_PORT,
+        name: str = INTERFACE_NAME,
+    ):
         logging.basicConfig(level=logging.DEBUG)
         self.logger = logging.getLogger(name)
         self.host = host
@@ -18,13 +24,12 @@ class STM32_TCP:
         self.sock = None
         self.timeout = 1
         self.connect()
-        
 
     def connect(self):
         self.logger.info(f"Connecting to STM32 via TCP/IP at {self.host}:{self.port}")
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(self.timeout)
-        self.sock.connect((self.host,self.port))
+        self.sock.connect((self.host, self.port))
 
     def teardown(self):
         if self.sock is not None:
@@ -39,7 +44,8 @@ class STM32_TCP:
         ret_msg: Message = Message.load(ret)
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
-        
+
+
 if __name__ == "__main__":
     stm32_tcp = STM32_TCP()
     our_msg = Message(Command.HELLO, 1235)

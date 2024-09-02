@@ -8,19 +8,18 @@ from python.command import Command
 from python.message import Message
 
 
-
 INTERFACE_NAME = "STM32_UART"
 BAUD = 115200
 HWID = "0403:6001"
 
+
 class STM32ConnectionError(Exception):
     """Failed to Connect to the Adapter..."""
 
-    
 
 class STM32_UART:
     """Communicate with STM32 via UART.
-    
+
     Uses the SH-U09C5 USB to TTL Adapter.
     https://www.deshide.com/product-details.html?pid=303205&_t=1661493660
 
@@ -37,10 +36,13 @@ class STM32_UART:
             self.logger.error(f"Failed to find USB TTL Adapter....")
             self.logger.info("Only Found:")
             for port in comports():
-                self.logger.info(f"\tDescription: {port.description}, HWID: {port.hwid}")
-            raise STM32ConnectionError("Failed to Find the UART Adapter... Is HWID correct?")
+                self.logger.info(
+                    f"\tDescription: {port.description}, HWID: {port.hwid}"
+                )
+            raise STM32ConnectionError(
+                "Failed to Find the UART Adapter... Is HWID correct?"
+            )
         self.logger.info(f"Connection Successful")
-
 
     def read(self):
         """
@@ -59,10 +61,10 @@ class STM32_UART:
         ret_msg: Message = Message.load(ret)
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
-    
+
     def teardown(self):
         self.ser.close()
-        
+
 
 if __name__ == "__main__":
     stm32 = STM32_UART()
