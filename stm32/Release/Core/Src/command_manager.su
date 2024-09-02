@@ -1,4 +1,0 @@
-../Core/Src/command_manager.c:13:6:nok	16	static
-../Core/Src/command_manager.c:22:6:hello	16	static
-../Core/Src/command_manager.c:32:6:initialize_function_map	0	static
-../Core/Src/command_manager.c:37:6:handle_request	16	static
