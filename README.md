@@ -27,6 +27,8 @@ The project also includes a PC-side interface to interact with the STM32, demons
    - Use LAN8720 Module
    - Enable ping stm32
    - enable tcp ip data send receive from PC
+ - RTC (Real Time Clock)
+   - RTC can be set or read by either UART or TCP/IP
 
 ### Parts List
    1. [STM32F407VET6 Development Board](https://stm32-base.org/boards/STM32F407VET6-STM32-F4VE-V2.0.html#JTAG-header)
