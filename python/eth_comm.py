@@ -4,13 +4,14 @@ from time import sleep
 from datetime import datetime, UTC
 from python.command import Command
 from python.message import Message
+from python.comm_base import STM32_COM_BASE
 
 DEFAULT_HOST = "192.168.0.10"
 DEFAULT_PORT = 12345
 INTERFACE_NAME = "STM32_TCP"
 
 
-class STM32_TCP:
+class STM32_TCP(STM32_COM_BASE):
 
     def __init__(
         self,
@@ -18,13 +19,11 @@ class STM32_TCP:
         port: int = DEFAULT_PORT,
         name: str = INTERFACE_NAME,
     ):
-        logging.basicConfig(level=logging.DEBUG)
-        self.logger = logging.getLogger(name)
         self.host = host
         self.port = port
         self.sock = None
         self.timeout = 1
-        self.connect()
+        super().__init__(name)
 
     def connect(self):
         """
@@ -60,33 +59,6 @@ class STM32_TCP:
         ret_msg: Message = Message.load(ret)
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
-
-    def get_time(self) -> datetime:
-        """
-        Get the Time from STM32
-
-        Returns:
-            datetime: Time Returned by STM32
-        """
-        resp = self.exchange(Message(Command.TIME, 0))
-        dt = datetime.fromtimestamp(resp.data[0], UTC)
-        self.logger.info(f"DateTime Received: {dt}")
-        return dt
-
-    def set_time(self, dt: datetime) -> datetime:
-        """
-        Set the Time on STM32
-
-        Args:
-            dt (datetime): Time to set.
-
-        Returns:
-            datetime: datetime returned after setting.
-        """
-        resp = self.exchange(Message(Command.TIME, int(dt.timestamp())))
-        dt = datetime.fromtimestamp(resp.data[0], UTC)
-        self.logger.info(f"DateTime Received: {dt}")
-        return dt
 
 
 if __name__ == "__main__":
