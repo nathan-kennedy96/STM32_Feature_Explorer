@@ -26,17 +26,32 @@ class STM32_TCP:
         self.connect()
 
     def connect(self):
+        """
+        Connect to STM32 via tcp/ip
+        """
         self.logger.info(f"Connecting to STM32 via TCP/IP at {self.host}:{self.port}")
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.settimeout(self.timeout)
         self.sock.connect((self.host, self.port))
 
     def teardown(self):
+        """
+        Close the connection if it exists.
+        """
         if self.sock is not None:
             self.sock.close()
             self.sock = None
 
     def exchange(self, msg: Message) -> Message:
+        """
+        Send a message and return the response.
+
+        Args:
+            msg (Message): Message to send.
+
+        Returns:
+            Message: Response Message
+        """
         self.logger.info(f"Sending {msg}")
         self.sock.sendall(bytes(msg))
         ret = self.sock.recv(Message.dtype.itemsize)
