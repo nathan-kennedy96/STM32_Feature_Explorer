@@ -15,6 +15,8 @@ def update_python_commands() -> None:
     target_text = text_data.split("{")[-1].split("}")[0]
     # no commas in the python implementation
     fixed_text = target_text.replace(",", "")
+    # No tabs, 4 spaces
+    fixed_text = fixed_text.replace("\t", "    ")
 
     # Write the text
     target_file = this_dir / "command.py"

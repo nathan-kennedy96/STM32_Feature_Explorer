@@ -35,7 +35,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,10 +59,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-//allocate the rx tx buffers used throughout
-uint8_t rx_buffer[COMM_BUFFER_SIZE]; // Define the buffers
-uint8_t tx_buffer[COMM_BUFFER_SIZE]; // Define the buffers
-
+const uint8_t fun = 10;
 /* USER CODE END 0 */
 
 /**
@@ -73,6 +69,8 @@ uint8_t tx_buffer[COMM_BUFFER_SIZE]; // Define the buffers
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+
+  printf("lol %i", fun);
   initialize_function_map();
   /* USER CODE END 1 */
 
@@ -98,7 +96,7 @@ int main(void)
   MX_LWIP_Init();
   /* USER CODE BEGIN 2 */
 
-  HAL_UART_Receive_IT(&huart4, rx_buffer, COMM_BUFFER_SIZE);
+  HAL_UART_Receive_IT(&huart4, rx_buffer, COM_BUFFER_SIZE);
   tcp_server_init();
 
   /* USER CODE END 2 */
@@ -224,10 +222,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	  handle_request(rx_buffer, tx_buffer);
 
 	  // Transmit the received data back
-	  HAL_UART_Transmit_IT(&huart4, tx_buffer, COMM_BUFFER_SIZE);
+	  HAL_UART_Transmit_IT(&huart4, tx_buffer, COM_BUFFER_SIZE);
 
 	  // Restart UART reception
-	  HAL_UART_Receive_IT(&huart4, rx_buffer, COMM_BUFFER_SIZE);
+	  HAL_UART_Receive_IT(&huart4, rx_buffer, COM_BUFFER_SIZE);
   }
 }
 /* USER CODE END 4 */
