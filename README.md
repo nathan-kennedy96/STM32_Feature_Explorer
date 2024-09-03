@@ -35,7 +35,7 @@ The project also includes a PC-side interface to interact with the STM32, demons
 
 ### Connection Diagram:
 
-![Connections Overview](docs\images\STM32F407VET6_Feature_Explorer_Schematic.PNG)
+![Connections Overview](docs/images/STM32F407VET6_Feature_Explorer_Schematic.PNG)
 
 
 # Using This Package
