@@ -1,7 +1,7 @@
 import socket
 import logging
 from time import sleep
-from datetime import datetime, UTC
+from datetime import datetime
 from python.command import Command
 from python.message import Message
 from python.comm_base import STM32_COM_BASE
