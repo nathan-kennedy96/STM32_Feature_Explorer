@@ -1,6 +1,7 @@
 import socket
 import logging
 from time import sleep
+from datetime import datetime, UTC
 from python.command import Command
 from python.message import Message
 
@@ -60,12 +61,39 @@ class STM32_TCP:
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
 
+    def get_time(self) -> datetime:
+        """
+        Get the Time from STM32
+
+        Returns:
+            datetime: Time Returned by STM32
+        """
+        resp = self.exchange(Message(Command.TIME, 0))
+        dt = datetime.fromtimestamp(resp.data[0], UTC)
+        self.logger.info(f"DateTime Received: {dt}")
+        return dt
+
+    def set_time(self, dt: datetime) -> datetime:
+        """
+        Set the Time on STM32
+
+        Args:
+            dt (datetime): Time to set.
+
+        Returns:
+            datetime: datetime returned after setting.
+        """
+        resp = self.exchange(Message(Command.TIME, int(dt.timestamp())))
+        dt = datetime.fromtimestamp(resp.data[0], UTC)
+        self.logger.info(f"DateTime Received: {dt}")
+        return dt
+
 
 if __name__ == "__main__":
     stm32_tcp = STM32_TCP()
-    our_msg = Message(Command.HELLO, 1235)
-    nok_msg = Message(Command.NOK, 1234)
+    time_msg = Message(Command.TIME, 0)
     while True:
-        our_msg = stm32_tcp.exchange(our_msg)
-        stm32_tcp.exchange(nok_msg)
-        sleep(1)
+
+        stm32_tcp.set_time(datetime(year=2000, month=2, day=1))
+        sleep(5)
+        stm32_tcp.get_time()

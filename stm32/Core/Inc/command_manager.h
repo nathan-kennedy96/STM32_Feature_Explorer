@@ -15,7 +15,7 @@
 typedef void (*FunctionPointer)(Message*, uint8_t*);
 
 // Declare the number of functions in the function map
-#define NUM_FUNCTIONS 2
+#define NUM_FUNCTIONS 3
 
 // Declare the function map array
 extern FunctionPointer function_map[NUM_FUNCTIONS];
