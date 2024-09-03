@@ -7,6 +7,8 @@ Welcome to the STM32 Feature Explorer project! The aim of this repo is to learn 
   - [Table of Contents](#table-of-contents)
   - [Project Overview](#project-overview)
   - [Features](#features)
+    - [Parts List](#parts-list)
+    - [Connection Diagram:](#connection-diagram)
 - [Using This Package](#using-this-package)
     - [Programming the STM32F407VET6](#programming-the-stm32f407vet6)
     - [Executing the Functional Tests](#executing-the-functional-tests)
@@ -25,6 +27,16 @@ The project also includes a PC-side interface to interact with the STM32, demons
    - Use LAN8720 Module
    - Enable ping stm32
    - enable tcp ip data send receive from PC
+
+### Parts List
+   1. [STM32F407VET6 Development Board](https://stm32-base.org/boards/STM32F407VET6-STM32-F4VE-V2.0.html#JTAG-header)
+   2. [STLINK V2](https://www.adafruit.com/product/2548)
+   3. [LAN8720 ETH Board](https://www.waveshare.com/lan8720-eth-board.htm)
+
+### Connection Diagram:
+
+![Connections Overview](docs\images\STM32F407VET6_Feature_Explorer_Schematic.PNG)
+
 
 # Using This Package
   
@@ -60,3 +72,4 @@ The project also includes a PC-side interface to interact with the STM32, demons
             2. `git commit` to rerun pre-commit hook
          2. For Functional Tests
             1. The STM32 functional Tests must pass!
+
