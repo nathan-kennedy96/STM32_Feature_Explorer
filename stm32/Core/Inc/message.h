@@ -13,7 +13,7 @@
 
 typedef struct {
     Command cmd;
-    uint16_t data;
+    uint32_t data;
 } Message;
 
 void deserialize_message(const uint8_t* buffer, Message* msg);

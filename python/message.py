@@ -11,7 +11,7 @@ class Message:
     dtype: np.dtype = np.dtype(
         [
             (COMMAND, np.int16),
-            (DATA, np.uint16),
+            (DATA, np.uint32),
         ]
     )
 

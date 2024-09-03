@@ -11,6 +11,7 @@
 typedef enum {
     NOK = 0,
     HELLO = 1,
+	TIME = 2,
 } Command;
 
 #endif /* INC_COMMAND_H_ */

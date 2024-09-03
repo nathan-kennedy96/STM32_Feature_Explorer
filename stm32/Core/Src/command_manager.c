@@ -28,10 +28,21 @@ void hello(Message* rx_msg, uint8_t* tx_buffer){
 	serialize_message(&ret_msg, tx_buffer);
 }
 
+void get_time(Message* rx_msg, uint8_t* tx_buffer){
+	//For now we will just have get_time respond input number + 1
+	const Message ret_msg = {
+	        .cmd = HELLO,
+	        .data = rx_msg->data + 1
+	};
+	serialize_message(&ret_msg, tx_buffer);
+}
+
+
 // Initialization function for the command map
 void initialize_function_map(void) {
     function_map[NOK] = nok;
     function_map[HELLO] = hello;
+    function_map[TIME] = get_time;
 }
 
 void handle_request(const uint8_t* rx_buffer, uint8_t* tx_buffer){
