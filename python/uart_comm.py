@@ -4,6 +4,7 @@ from serial import serial_for_url
 from serial.serialutil import SerialException
 from serial.tools.list_ports import comports
 
+from python.comm_base import STM32_COM_BASE
 from python.command import Command
 from python.message import Message
 
@@ -17,7 +18,7 @@ class STM32ConnectionError(Exception):
     """Failed to Connect to the Adapter..."""
 
 
-class STM32_UART:
+class STM32_UART(STM32_COM_BASE):
     """Communicate with STM32 via UART.
 
     Uses the SH-U09C5 USB to TTL Adapter.
@@ -25,12 +26,21 @@ class STM32_UART:
 
     """
 
-    def __init__(self, name: str = INTERFACE_NAME, hwid: str = HWID):
-        logging.basicConfig(level=logging.DEBUG)
-        self.logger = logging.getLogger(name)
-        self.logger.info(f"Connecting to STM32 via hwid {hwid}")
+    def __init__(self, name: str = INTERFACE_NAME, hwid: str = HWID, baud=BAUD):
+        self.hwid = hwid
+        self.baud = baud
+        super().__init__(name)
+
+    def connect(self):
+        """
+        Connect to the STM32 via UART.
+
+        Raises:
+            STM32ConnectionError: We Failed to connect via UART.
+        """
+        self.logger.info(f"Connecting to STM32 via hwid {self.hwid}")
         try:
-            self.ser = serial_for_url(f"hwgrep://{hwid}", baudrate=BAUD)
+            self.ser = serial_for_url(f"hwgrep://{self.hwid}", self.baud)
             self.ser.timeout = 1
         except SerialException:
             self.logger.error(f"Failed to find USB TTL Adapter....")
@@ -54,6 +64,15 @@ class STM32_UART:
         self.logger.info(f"Received message: {msg}")
 
     def exchange(self, msg: Message) -> Message:
+        """
+        Send a message and obtain a response.
+
+        Args:
+            msg (Message): message to send.
+
+        Returns:
+            Message: response message.
+        """
         self.logger.info(f"Sending {msg}")
         self.ser.write(bytes(msg))
         ret = self.ser.read(Message.dtype.itemsize)
