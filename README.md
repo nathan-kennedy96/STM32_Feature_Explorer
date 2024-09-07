@@ -32,6 +32,7 @@ The project also includes a PC-side interface to interact with the STM32, demons
    1. [STM32F407VET6 Development Board](https://stm32-base.org/boards/STM32F407VET6-STM32-F4VE-V2.0.html#JTAG-header)
    2. [STLINK V2](https://www.adafruit.com/product/2548)
    3. [LAN8720 ETH Board](https://www.waveshare.com/lan8720-eth-board.htm)
+   4. [SH-U09C5 USB to TTL] (https://www.deshide.com/product-details.html?pid=303205&_t=1661493660)
 
 ### Connection Diagram:
 
