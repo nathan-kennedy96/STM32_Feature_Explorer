@@ -6,7 +6,7 @@ from serial.tools.list_ports import comports
 
 from python.comm_base import STM32_COM_BASE
 from python.command import Command
-from python.message import Message
+from python.message import Message, MessageHeader
 
 
 INTERFACE_NAME = "STM32_UART"
@@ -58,9 +58,12 @@ class STM32_UART(STM32_COM_BASE):
         """
         Read a message from the STM32
         """
-        ret = self.ser.read(Message.dtype.itemsize)
-        self.logger.debug(f"Received {ret}")
-        msg: Message = Message.load(ret)
+        ret = self.ser.read(MessageHeader.dtype.itemsize)
+        self.logger.debug(f"Received Header Bytes {ret}")
+        header = MessageHeader.load(ret)
+        payload = self.ser.read(header.payload_size)
+        self.logger.debug(f"Received Payload Bytes {payload}")
+        msg: Message = Message.load(ret + payload)
         self.logger.info(f"Received message: {msg}")
 
     def exchange(self, msg: Message) -> Message:
@@ -74,22 +77,52 @@ class STM32_UART(STM32_COM_BASE):
             Message: response message.
         """
         self.logger.info(f"Sending {msg}")
-        self.ser.write(bytes(msg))
-        ret = self.ser.read(Message.dtype.itemsize)
-        self.logger.debug(f"Received Response {ret}")
-        ret_msg: Message = Message.load(ret)
+
+        msg_bytes = bytes(msg)
+        self.logger.debug(f"Sending {msg_bytes}")
+        # Write the header
+        self.ser.write(msg_bytes[: MessageHeader.dtype.itemsize])
+        # Write the data
+        self.ser.write(msg_bytes[MessageHeader.dtype.itemsize :])
+        ret_msg = self.recv_msg()
         self.logger.info(f"Received Response: {ret_msg}")
         return ret_msg
+
+    def recv_msg(self) -> Message:
+        """
+        Receive a message in two parts, first the header, then the data.
+
+        Returns:
+            Message: Constructed message object.
+        """
+
+        ret = self.ser.read(MessageHeader.dtype.itemsize)
+        self.logger.debug(f"Received Response {ret}")
+        header = MessageHeader.load(ret)
+        # Read the payload
+        data = self.ser.read(int(header.payload_size[0]))
+        self.logger.debug(f"Received data {data}")
+        return Message.load(ret + data)  # TODO youre deserializing the header 2x
 
     def teardown(self):
         self.ser.close()
 
 
 if __name__ == "__main__":
+    import logging
+
+    logging.getLogger().setLevel(logging.DEBUG)
     stm32 = STM32_UART()
-    our_msg = Message(Command.HELLO, 1235)
-    nok_msg = Message(Command.NOK, 1234)
+    hello = Message(
+        Command.HELLO,
+        [
+            5,
+            5,
+            5,
+            5,
+        ],
+    )
     while True:
-        our_msg = stm32.exchange(our_msg)
-        stm32.exchange(nok_msg)
+        ret_msg = stm32.exchange(hello)
+        hello = ret_msg
         sleep(1)

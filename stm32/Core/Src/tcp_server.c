@@ -55,11 +55,10 @@ static err_t tcp_server_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, er
 
 
         // Ensure the received data fits in the buffer
-        if (p->tot_len <= COM_BUFFER_SIZE) {
+        if (p->tot_len <= MAX_COM_BUFFER_SIZE) {
             handle_request((uint8_t *)p->payload, tx_buffer);
-
             // Send the response back to the client
-            if (tcp_write(tpcb, tx_buffer, COM_BUFFER_SIZE, TCP_WRITE_FLAG_COPY) != ERR_OK) {
+            if (tcp_write(tpcb, tx_buffer, tx_buffer[1]+2, TCP_WRITE_FLAG_COPY) != ERR_OK) {
                 // Handle tcp_write error
             	char response[] = "TCP WRITE ERROR!";
             	tcp_write(tpcb, response, strlen(response), TCP_WRITE_FLAG_COPY);
