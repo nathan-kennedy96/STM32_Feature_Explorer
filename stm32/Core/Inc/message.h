@@ -12,8 +12,13 @@
 #include <stdint.h>   // Include standard integer types
 
 typedef struct {
-    Command cmd;
-    uint32_t data;
+    uint8_t command;
+    uint8_t payload_size;
+} MessageHeader;
+
+typedef struct {
+    MessageHeader header;
+    void* data;
 } Message;
 
 void deserialize_message(const uint8_t* buffer, Message* msg);

@@ -50,7 +50,7 @@ class STM32_COM_BASE(ABC):
         Returns:
             datetime: Time Returned by STM32
         """
-        resp = self.exchange(Message(Command.TIME, 0))
+        resp = self.exchange(Message(Command.TIME, [0]))
         dt = datetime.fromtimestamp(resp.data[0], UTC)
         self.logger.info(f"DateTime Received: {dt}")
         return dt
@@ -65,7 +65,7 @@ class STM32_COM_BASE(ABC):
         Returns:
             datetime: datetime returned after setting.
         """
-        resp = self.exchange(Message(Command.TIME, int(dt.timestamp())))
+        resp = self.exchange(Message(Command.TIME, [int(dt.timestamp())]))
         dt = datetime.fromtimestamp(resp.data[0], UTC)
         self.logger.info(f"DateTime Received: {dt}")
         return dt

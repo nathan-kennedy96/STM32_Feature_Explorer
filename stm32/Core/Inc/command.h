@@ -14,4 +14,10 @@ typedef enum {
 	TIME = 2,
 } Command;
 
+// 0 - uint8_t
+// 1 - uint16_t
+// 2 - uint32_t
+
+extern int Command_type_map[];
+
 #endif /* INC_COMMAND_H_ */

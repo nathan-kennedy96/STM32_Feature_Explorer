@@ -1,7 +1,7 @@
 import pytest
 from time import sleep
 from datetime import datetime, timedelta, timezone
-
+import logging
 from python.comm_base import STM32_COM_BASE
 from python.message import Message
 from python.command import Command
@@ -21,20 +21,20 @@ class BaseTestCommFunctionality:
         "data_number, expected_response",
         [
             # Hello is programmed to respond with data incremented by one
-            (1234, 1235),
-            (0, 1),
-            (999, 1000),
+            ([1234], [1235]),
+            ([0], [1]),
+            ([999], [1000]),
         ],
     )
     def test_hello_message(self, data_number, expected_response):
         """Test that the hello message returns a response with correct Command and data"""
-        hello_msg = Message(Command.HELLO, data_number)
+        hello_msg = Message(Command.HELLO, [data_number])
         response_message = self.comm.exchange(hello_msg)
         assert response_message.data == expected_response
 
     @pytest.mark.parametrize(
         "command, data, expected_command, expected_data",
-        [(Command.NOK, 0, Command.NOK, 0), (Command.NOK, 123, Command.NOK, 0)],
+        [(Command.NOK, [0], Command.NOK, [0]), (Command.NOK, [123], Command.NOK, [0])],
     )
     def test_nok_message(self, command, data, expected_command, expected_data):
         """Test that the NOK message or unknown message responds with the expected NOK message."""
