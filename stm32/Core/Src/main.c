@@ -47,9 +47,9 @@ RTC_HandleTypeDef hrtc;
 
 UART_HandleTypeDef huart4;
 
-static enum { HEADER, PAYLOAD } state = HEADER;
-
 /* USER CODE BEGIN PV */
+
+static enum { HEADER, PAYLOAD } state = HEADER;
 
 /* USER CODE END PV */
 
